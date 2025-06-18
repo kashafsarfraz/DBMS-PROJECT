@@ -1,0 +1,2068 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PrimeCart - Online Retail System</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: #2563eb;
+      --primary-hover: #1d4ed8;
+      --secondary-color: #374151;
+      --accent-color: #10b981;
+      --light-color: #f9fafb;
+      --dark-color: #111827;
+      --gray-light: #e5e7eb;
+      --gray-medium: #9ca3af;
+      --border-radius: 8px;
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12);
+      --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+      --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--light-color);
+      color: var(--dark-color);
+      line-height: 1.6;
+    }
+
+    header {
+      background-color: white;
+      box-shadow: var(--shadow-sm);
+      padding: 1rem 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary-color);
+    }
+
+    .logo i {
+      margin-right: 0.5rem;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      background-color: white;
+      box-shadow: var(--shadow-sm);
+      position: sticky;
+      top: 72px;
+      z-index: 90;
+    }
+
+    nav a {
+      color: var(--secondary-color);
+      padding: 1rem 1.5rem;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      border-bottom: 3px solid transparent;
+    }
+
+    nav a:hover {
+      color: var(--primary-color);
+      border-bottom: 3px solid var(--primary-color);
+    }
+
+    nav a.active {
+      color: var(--primary-color);
+      border-bottom: 3px solid var(--primary-color);
+    }
+
+    .container {
+      padding: 2rem;
+      max-width: 1400px;
+      margin: auto;
+    }
+
+    .hero {
+      background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+      background-size: cover;
+      background-position: center;
+      color: white;
+      padding: 5rem 2rem;
+      text-align: center;
+      border-radius: var(--border-radius);
+      margin-bottom: 2rem;
+    }
+
+    .hero h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      max-width: 700px;
+      margin: 0 auto 2rem;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.75rem 1.5rem;
+      border-radius: var(--border-radius);
+      font-weight: 600;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: none;
+    }
+
+    .btn-primary {
+      background-color: var(--primary-color);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--primary-hover);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .btn-secondary {
+      background-color: var(--secondary-color);
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--dark-color);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .btn-accent {
+      background-color: var(--accent-color);
+      color: white;
+    }
+
+    .btn-accent:hover {
+      background-color: #0d9e6e;
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .product-card {
+      background-color: white;
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .product-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .product-info {
+      padding: 1.5rem;
+    }
+
+    .product-info h3 {
+      margin-bottom: 0.5rem;
+      font-size: 1.1rem;
+    }
+
+    .product-price {
+      font-weight: 700;
+      color: var(--primary-color);
+      margin-bottom: 1rem;
+    }
+
+    .product-meta {
+      display: flex;
+      justify-content: space-between;
+      color: var(--gray-medium);
+      font-size: 0.9rem;
+    }
+
+    .product-actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    .product-actions .btn {
+      flex: 1;
+      padding: 0.5rem;
+      font-size: 0.9rem;
+    }
+
+    .form-section {
+      background-color: white;
+      padding: 2rem;
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow-md);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid var(--gray-light);
+      border-radius: var(--border-radius);
+      font-family: inherit;
+      transition: border-color 0.3s ease;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary-color);
+    }
+
+    .dashboard-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background-color: white;
+      padding: 1.5rem;
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow-sm);
+      text-align: center;
+    }
+
+    .stat-card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+      color: var(--primary-color);
+    }
+
+    .stat-card p {
+      color: var(--gray-medium);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: white;
+      box-shadow: var(--shadow-sm);
+      border-radius: var(--border-radius);
+      overflow: hidden;
+    }
+
+    th, td {
+      padding: 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--gray-light);
+    }
+
+    th {
+      background-color: var(--light-color);
+      font-weight: 600;
+    }
+
+    tr:hover {
+      background-color: var(--light-color);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.5rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .badge-success {
+      background-color: #d1fae5;
+      color: #065f46;
+    }
+
+    .badge-warning {
+      background-color: #fef3c7;
+      color: #92400e;
+    }
+
+    .badge-danger {
+      background-color: #fee2e2;
+      color: #991b1b;
+    }
+
+    #main-content-admin,
+    #main-content-customer {
+      display: none;
+    }
+
+    .login-container {
+      max-width: 500px;
+      margin: 3rem auto;
+    }
+
+    .login-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .login-header h2 {
+      font-size: 2rem;
+      color: var(--primary-color);
+    }
+
+    .login-footer {
+      text-align: center;
+      margin-top: 1.5rem;
+      color: var(--gray-medium);
+    }
+
+    .login-footer a {
+      color: var(--primary-color);
+      text-decoration: none;
+    }
+
+    .alert {
+      padding: 1rem;
+      border-radius: var(--border-radius);
+      margin-bottom: 1rem;
+    }
+
+    .alert-success {
+      background-color: #d1fae5;
+      color: #065f46;
+    }
+
+    .alert-danger {
+      background-color: #fee2e2;
+      color: #991b1b;
+    }
+
+    footer {
+      background-color: var(--secondary-color);
+      color: white;
+      padding: 2rem;
+      margin-top: 3rem;
+    }
+
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .footer-column h3 {
+      margin-bottom: 1rem;
+      font-size: 1.2rem;
+    }
+
+    .footer-column ul {
+      list-style: none;
+    }
+
+    .footer-column ul li {
+      margin-bottom: 0.5rem;
+    }
+
+    .footer-column ul li a {
+      color: var(--gray-light);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .footer-column ul li a:hover {
+      color: white;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .social-links a {
+      color: white;
+      font-size: 1.2rem;
+    }
+
+    .copyright {
+      text-align: center;
+      margin-top: 2rem;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--gray-light);
+    }
+
+    /* Wishlist styles */
+    .wishlist-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    /* Order history styles */
+    .order-card {
+      background-color: white;
+      border-radius: var(--border-radius);
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .order-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--gray-light);
+    }
+
+    .order-products {
+      margin-top: 1rem;
+    }
+
+    .order-product {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--gray-light);
+    }
+
+    .order-product:last-child {
+      border-bottom: none;
+    }
+
+    .order-product-image {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: var(--border-radius);
+      margin-right: 1rem;
+    }
+
+    .order-product-info {
+      flex: 1;
+    }
+
+    /* Review form */
+    .review-form {
+      margin-top: 2rem;
+    }
+
+    .rating {
+      display: flex;
+      margin-bottom: 1rem;
+    }
+
+    .rating input {
+      display: none;
+    }
+
+    .rating label {
+      cursor: pointer;
+      font-size: 1.5rem;
+      color: var(--gray-light);
+    }
+
+    .rating input:checked ~ label {
+      color: #fbbf24;
+    }
+
+    /* Admin forms */
+    .admin-form {
+      background-color: white;
+      padding: 2rem;
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow-md);
+      margin-bottom: 2rem;
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid var(--gray-light);
+      margin-bottom: 1.5rem;
+    }
+
+    .tab {
+      padding: 0.75rem 1.5rem;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+    }
+
+    .tab.active {
+      border-bottom: 3px solid var(--primary-color);
+      color: var(--primary-color);
+      font-weight: 500;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* New styles for order/customer details */
+    .detail-row {
+      display: none; /* Hidden by default */
+      background-color: #f0f4f8;
+      padding: 1rem;
+      border-top: 1px solid var(--gray-light);
+    }
+    .detail-row.active {
+      display: table-row; /* Show when active */
+    }
+    .detail-row td {
+      padding: 1rem;
+    }
+    .detail-row .detail-content {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .detail-row .detail-item {
+      flex: 1 1 200px;
+    }
+    .detail-row .detail-item strong {
+      display: block;
+      margin-bottom: 0.25rem;
+      color: var(--primary-color);
+    }
+    .cart-count {
+        background-color: red;
+        color: white;
+        border-radius: 50%;
+        padding: 0.1rem 0.5rem;
+        font-size: 0.8rem;
+        position: relative;
+        top: -8px;
+        left: -5px;
+        min-width: 20px; /* Ensures circle even for single digit */
+        text-align: center;
+        display: inline-block;
+    }
+
+    /* Cart item specific styles */
+    .cart-item-card {
+        display: flex;
+        align-items: center;
+        background-color: white;
+        padding: 1rem;
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow-sm);
+        margin-bottom: 1rem;
+    }
+
+    .cart-item-card img {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: var(--border-radius);
+        margin-right: 1rem;
+    }
+
+    .cart-item-info {
+        flex-grow: 1;
+    }
+
+    .cart-item-info h4 {
+        margin-bottom: 0.25rem;
+    }
+
+    .cart-item-actions {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+    }
+
+    .cart-total {
+        background-color: white;
+        padding: 1.5rem;
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow-md);
+        margin-top: 2rem;
+        text-align: right;
+        font-size: 1.2rem;
+        font-weight: 600;
+    }
+
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        padding: 1rem;
+      }
+
+      nav {
+        flex-wrap: wrap;
+      }
+
+      nav a {
+        padding: 0.75rem;
+        font-size: 0.9rem;
+      }
+
+      .hero {
+        padding: 3rem 1rem;
+      }
+
+      .hero h2 {
+        font-size: 2rem;
+      }
+
+      .container {
+        padding: 1rem;
+      }
+    }
+  </style>
+  <script>
+    // Global arrays for client-side (non-persistent) data
+    let cart = [];
+    let allOrders = [ // Unified array to store all orders with initial mock data
+        {
+            id: 'ORD-10001',
+            date: '2023-05-20',
+            customer: 'Customer Placeholder',
+            total: 120000,
+            products: [
+                { name: 'Gaming Laptop', price: 120000, imageUrl: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80', quantity: 1, subtotal: 120000 }
+            ],
+            status: 'Delivered'
+        },
+        {
+            id: 'ORD-10002',
+            date: '2023-06-01',
+            customer: 'Customer Placeholder',
+            total: 3499 * 2,
+            products: [
+                { name: 'Stylish Sneakers', price: 3499, imageUrl: 'https://images.unsplash.com/photo-1542291026-79eddc756ec0?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80', quantity: 2, subtotal: 3499 * 2 }
+            ],
+            status: 'Processing'
+        },
+        {
+            id: 'ORD-10003',
+            date: '2023-06-05',
+            customer: 'Customer Placeholder',
+            total: 8500,
+            products: [
+                { name: 'Analog Watch', price: 8500, imageUrl: 'https://images.unsplash.com/photo-1523275371358-132d7332d7a2?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80', quantity: 1, subtotal: 8500 }
+            ],
+            status: 'Shipped'
+        }
+    ];
+    let wishlist = []; // Make sure wishlist is also initialized globally
+    let nextOrderId = 10004; // Starting ID for mock orders, after initial ones
+
+    function login(event) {
+      event.preventDefault();
+      const role = document.getElementById("role").value;
+
+      // Hide all main content sections first
+      document.getElementById("main-content-admin").style.display = "none";
+      document.getElementById("main-content-customer").style.display = "none";
+
+      // Display the selected role's main content
+      document.getElementById(`main-content-${role}`).style.display = "block";
+      document.getElementById("login-section").style.display = "none";
+
+      // Set active nav item and display corresponding section
+      const navLinks = document.querySelectorAll(`#main-content-${role} nav a`);
+      navLinks.forEach(link => {
+        // Remove existing listener to prevent duplicates before adding
+        link.removeEventListener('click', handleNavLinkClick);
+        link.addEventListener('click', handleNavLinkClick);
+      });
+
+      // Programmatically click the first nav link to show default content
+      const firstNavLink = document.querySelector(`#main-content-${role} nav a:first-child`);
+      if (firstNavLink) {
+        firstNavLink.click();
+      }
+
+      // Update current date for admin dashboard
+      updateCurrentDate();
+
+      // Render admin orders if admin logs in
+      if (role === 'admin') {
+          renderAdminOrders();
+      }
+    }
+    
+    // Helper function to handle nav link clicks
+    function handleNavLinkClick(e) {
+      e.preventDefault();
+      const role = this.closest('[id^="main-content-"]').id.replace('main-content-', '');
+      const navLinks = document.querySelectorAll(`#main-content-${role} nav a`);
+      navLinks.forEach(l => l.classList.remove('active'));
+      this.classList.add('active');
+      const targetId = this.getAttribute('href').substring(1);
+      document.querySelectorAll(`#main-content-${role} > .container`).forEach(section => {
+        section.style.display = 'none';
+      });
+      const targetSection = document.getElementById(targetId);
+      if (targetSection) {
+          targetSection.style.display = 'block';
+      }
+
+      // Specific renders for customer sections
+      if (role === 'customer') {
+          if (targetId === 'customer-cart') {
+              renderCartItems();
+          } else if (targetId === 'customer-orders') {
+              renderOrders();
+          }
+      } else if (role === 'admin') {
+          if (targetId === 'admin-orders' || targetId === 'admin-dashboard') {
+              renderAdminOrders(); // Re-render admin orders when these tabs are active
+          }
+      }
+    }
+
+    function logout() {
+      document.getElementById("login-section").style.display = "block";
+      document.getElementById("main-content-admin").style.display = "none";
+      document.getElementById("main-content-customer").style.display = "none";
+      // Clear cart/wishlist/orders on logout for fresh session
+      cart = [];
+      allOrders = []; // Clear all orders on logout
+      wishlist = [];
+      updateCartCount();
+    }
+
+    function updateCurrentDate() {
+      const now = new Date();
+      const dateElement = document.getElementById('current-date');
+      if (dateElement) { // Check if element exists (only in admin)
+        dateElement.textContent = now.toLocaleDateString('en-US', {
+          weekday: 'long',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        });
+      }
+    }
+
+    // For admin section tabs
+    function openTab(evt, tabName) {
+      const tabContents = evt.currentTarget.closest('.container').getElementsByClassName("tab-content");
+      for (let i = 0; i < tabContents.length; i++) {
+        tabContents[i].classList.remove("active");
+      }
+
+      const tabs = evt.currentTarget.closest('.tabs').getElementsByClassName("tab");
+      for (let i = 0; i < tabs.length; i++) {
+        tabs[i].classList.remove("active");
+      }
+
+      document.getElementById(tabName).classList.add("active");
+      evt.currentTarget.classList.add("active");
+    }
+
+    // Function to delete a table row (Admin)
+    function deleteRow(buttonElement) {
+      if (confirm('Are you sure you want to delete this item?')) {
+        const rowToDelete = buttonElement.closest('tr');
+        const orderId = rowToDelete.dataset.orderId; // Get the order ID from data attribute
+        if (orderId) {
+            allOrders = allOrders.filter(order => order.id !== orderId); // Remove from allOrders
+            renderAdminOrders(); // Re-render admin tables
+            console.log(`Order ${orderId} deleted and tables re-rendered.`);
+        } else {
+            rowToDelete.remove(); // For non-order rows
+            console.log('Row deleted visually.');
+        }
+        // In a real app, you'd send an API call here to delete from DB
+      }
+    }
+
+    // Function to handle "Edit" button click (Admin)
+    function editItem(buttonElement) {
+      const row = buttonElement.closest('tr');
+      const itemId = row.querySelector('td:first-child').textContent; // Assuming first TD is ID
+      alert(`Editing item: ${itemId}. (Check console for dummy action)`);
+      console.log(`Action: Edit item with ID ${itemId}. In a real application, this would open an edit form populated with data.`);
+    }
+
+    // Function to handle "View Details" button click (Admin)
+    function viewDetails(buttonElement, type) {
+      const row = buttonElement.closest('tr');
+      // Find the next sibling that is a detail-row or create one
+      let detailRow = row.nextElementSibling;
+      while(detailRow && !detailRow.classList.contains('detail-row')) {
+          detailRow = detailRow.nextElementSibling;
+      }
+
+      if (!detailRow || !detailRow.dataset.forRowId || detailRow.dataset.forRowId !== row.id) {
+          // If no existing detail row for this order, or it's for a different one, create a new one
+          detailRow = document.createElement('tr');
+          detailRow.classList.add('detail-row');
+          detailRow.dataset.forRowId = row.id; // Link the detail row to its parent row
+          const colSpan = row.cells.length;
+
+          // Placeholder content for details
+          let content = `<div class="detail-content">
+                            <div class="detail-item"><strong>Extra Info:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
+                            <div class="detail-item"><strong>More Details:</strong> Nulla facilisi. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
+                         </div>`;
+
+          // If it's an order, add specific order details
+          if (type === 'Order') {
+              const orderId = row.dataset.orderId; // Get order ID from data attribute
+              const order = allOrders.find(o => o.id === orderId);
+
+              if (order) {
+                  let productsHtml = order.products.map(p => `
+                      <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+                          <img src="${p.imageUrl}" style="width: 40px; height: 40px; object-fit: cover; border-radius: 4px; margin-right: 0.5rem;">
+                          <span>${p.name} (x${p.quantity}) - Rs. ${p.price.toLocaleString()}</span>
+                      </div>
+                  `).join('');
+
+                  content = `<div class="detail-content">
+                                <div class="detail-item"><strong>Order ID:</strong> ${order.id}</div>
+                                <div class="detail-item"><strong>Customer:</strong> Customer Placeholder</div>
+                                <div class="detail-item"><strong>Order Date:</strong> ${order.date}</div>
+                                <div class="detail-item"><strong>Amount:</strong> Rs. ${order.total.toLocaleString()}</div>
+                                <div class="detail-item" style="flex: 1 1 100%;">
+                                    <strong>Items:</strong><br>${productsHtml}
+                                </div>
+                                <div class="detail-item" style="flex: 1 1 100%;"><strong>Status:</strong> ${order.status}</div>
+                             </div>`;
+              } else {
+                  content = `<div class="detail-content">Order details not found.</div>`;
+              }
+          } else if (type === 'Customer') {
+              const customerId = row.cells[0].textContent;
+              const customerName = row.cells[1].textContent;
+              const customerEmail = row.cells[2].textContent;
+              const customerPhone = row.cells[3].textContent;
+              const customerOrders = row.cells[4].textContent;
+
+              content = `<div class="detail-content">
+                            <div class="detail-item"><strong>Customer ID:</strong> ${customerId}</div>
+                            <div class="detail-item"><strong>Name:</strong> ${customerName}</div>
+                            <div class="detail-item"><strong>Email:</strong> ${customerEmail}</div>
+                            <div class="detail-item"><strong>Phone:</strong> ${customerPhone}</div>
+                            <div class="detail-item"><strong>Total Orders:</strong> ${customerOrders}</div>
+                            <div class="detail-item" style="flex: 1 1 100%;"><strong>Address:</strong> 123 Dummy St, Example City, Country</div>
+                         </div>`;
+          }
+
+
+          detailRow.innerHTML = `<td colspan="${colSpan}">${content}</td>`;
+          row.parentNode.insertBefore(detailRow, row.nextSibling);
+      }
+
+      // Toggle visibility
+      detailRow.classList.toggle('active');
+      console.log(`Action: Toggling details for ${type}.`);
+    }
+
+    // Function to handle form submissions for "Add Product" and "Add Category" (Admin)
+    function handleFormSubmit(event, formType) {
+      event.preventDefault();
+      const form = event.target;
+      const formData = new FormData(form);
+      const data = {};
+      for (let [key, value] of formData.entries()) {
+        data[key] = value;
+      }
+      console.log(`Submitted ${formType} Data:`, data);
+      alert(`${formType} added/saved! (Check console for data)`);
+      form.reset(); // Clear the form
+      // In a real app, you'd send this data via fetch() to your backend
+    }
+
+    // Function to filter tables based on search input (Admin)
+    function filterTable(inputId, tableId) {
+      const input = document.getElementById(inputId);
+      const filter = input.value.toUpperCase();
+      const table = document.getElementById(tableId);
+      const tr = table.getElementsByTagName('tr');
+
+      for (let i = 1; i < tr.length; i++) { // Start from 1 to skip header row
+        // If it's a detail row, skip it or hide it if its parent is hidden
+        if (tr[i].classList.contains('detail-row')) {
+            tr[i].style.display = 'none'; // Always hide detail rows during filter
+            continue;
+        }
+
+        let displayRow = false;
+        const tds = tr[i].getElementsByTagName('td');
+        if (tds.length > 0) {
+          // Check all visible cells (excluding action column usually)
+          for (let j = 0; j < tds.length - 1; j++) { // Loop through all cells except the last (actions)
+            const cellText = tds[j].textContent || tds[j].innerText;
+            if (cellText.toUpperCase().indexOf(filter) > -1) {
+              displayRow = true;
+              break;
+            }
+          }
+        }
+        tr[i].style.display = displayRow ? '' : 'none';
+      }
+    }
+
+    // Function to handle order status change (Admin)
+    function changeOrderStatus(selectElement) {
+      const row = selectElement.closest('tr');
+      const orderId = row.dataset.orderId;
+      const newStatus = selectElement.value;
+
+      const orderIndex = allOrders.findIndex(order => order.id === orderId);
+      if (orderIndex > -1) {
+          allOrders[orderIndex].status = newStatus;
+          renderAdminOrders(); // Re-render to update badges/UI
+          alert(`Order ${orderId} status updated to ${newStatus}.`);
+          console.log(`Order ID: ${orderId}, New Status: ${newStatus}. (Status updated visually)`);
+      }
+      // In a real app, send API call to update order status in DB
+    }
+
+    // Customer Side Functions
+
+    // Update cart count in header
+    function updateCartCount() {
+      const cartCountElement = document.getElementById('cart-count');
+      if (cartCountElement) {
+        cartCountElement.textContent = cart.length;
+        cartCountElement.style.display = cart.length > 0 ? 'inline-block' : 'none';
+      }
+    }
+
+    // Add product to (non-persistent) cart
+    function addToCart(productName, productPrice, imageUrl) {
+      const existingItemIndex = cart.findIndex(item => item.name === productName);
+      if (existingItemIndex > -1) {
+          cart[existingItemIndex].quantity += 1;
+          cart[existingItemIndex].subtotal += productPrice;
+      } else {
+          cart.push({ name: productName, price: productPrice, imageUrl: imageUrl, quantity: 1, subtotal: productPrice });
+      }
+      updateCartCount();
+      alert(`${productName} added to cart!`);
+      console.log('Current Cart:', cart);
+      renderCartItems(); // Re-render cart display
+    }
+
+    // Remove item from cart
+    function removeItemFromCart(index) {
+        if (confirm('Are you sure you want to remove this item from your cart?')) {
+            cart.splice(index, 1);
+            updateCartCount();
+            renderCartItems();
+            alert('Item removed from cart.');
+            console.log('Current Cart:', cart);
+        }
+    }
+
+    // Render cart items in the cart section
+    function renderCartItems() {
+        const cartItemsList = document.getElementById('cart-items-list');
+        if (!cartItemsList) return;
+
+        cartItemsList.innerHTML = ''; // Clear previous items
+        let total = 0;
+
+        if (cart.length === 0) {
+            cartItemsList.innerHTML = '<p>Your cart is currently empty. Start shopping to add items!</p>';
+            document.getElementById('proceed-to-checkout-btn').style.display = 'none';
+        } else {
+            cart.forEach((item, index) => {
+                const cartItemCard = document.createElement('div');
+                cartItemCard.classList.add('cart-item-card');
+                cartItemCard.innerHTML = `
+                    <img src="${item.imageUrl}" alt="${item.name}" class="cart-item-image">
+                    <div class="cart-item-info">
+                        <h4>${item.name}</h4>
+                        <p>Price: Rs. ${item.price.toLocaleString()}</p>
+                        <p>Quantity: ${item.quantity}</p>
+                        <p>Subtotal: Rs. ${item.subtotal.toLocaleString()}</p>
+                    </div>
+                    <div class="cart-item-actions">
+                        <button class="btn btn-danger btn-sm" onclick="removeItemFromCart(${index})"><i class="fas fa-trash"></i> Remove</button>
+                    </div>
+                `;
+                cartItemsList.appendChild(cartItemCard);
+                total += item.subtotal;
+            });
+
+            const cartTotalDiv = document.createElement('div');
+            cartTotalDiv.classList.add('cart-total');
+            cartTotalDiv.innerHTML = `Total: Rs. ${total.toLocaleString()}`;
+            cartItemsList.appendChild(cartTotalDiv);
+            document.getElementById('proceed-to-checkout-btn').style.display = 'inline-block';
+        }
+    }
+
+
+    // Proceed to Checkout (Client-side simulation)
+    function checkout() {
+        if (cart.length === 0) {
+            alert('Your cart is empty. Please add some products before checking out.');
+            return;
+        }
+
+        const orderId = `ORD-${nextOrderId++}`;
+        const orderDate = new Date().toLocaleDateString('en-US');
+        let orderTotal = 0;
+        cart.forEach(item => orderTotal += item.subtotal);
+
+        const newOrder = {
+            id: orderId,
+            date: orderDate,
+            customer: "Customer Placeholder", // In a real app, this would be the logged-in user's name
+            total: orderTotal,
+            products: [...cart], // Copy cart items to order
+            status: 'Processing' // Initial status
+        };
+
+        allOrders.push(newOrder); // Add to the shared orders array
+        cart = []; // Clear cart after checkout
+        updateCartCount();
+
+        alert(`Order ${orderId} placed successfully!`);
+        console.log('New Order Placed:', newOrder);
+        console.log('All Orders:', allOrders);
+
+        // Update both customer and admin order views
+        renderOrders(); // For customer's "My Orders"
+        renderAdminOrders(); // For admin's "Order Management" and Dashboard
+
+        // Navigate to My Orders section
+        const ordersNavLink = document.querySelector('#main-content-customer nav a[href="#customer-orders"]');
+        if (ordersNavLink) {
+            ordersNavLink.click(); // Simulate clicking the My Orders tab
+        }
+    }
+
+
+    // Render orders in the My Orders section (Customer)
+    function renderOrders() {
+        const customerOrdersList = document.getElementById('customer-orders-list');
+        if (!customerOrdersList) return;
+
+        customerOrdersList.innerHTML = ''; // Clear previous orders
+
+        // Filter orders relevant to the current customer (if we had customer IDs)
+        // For now, it shows all orders placed in this session.
+        const relevantOrders = allOrders; // Or filter by customer ID if implemented
+
+        if (relevantOrders.length === 0) {
+            customerOrdersList.innerHTML = '<p>You have no orders yet. Place an order to see it here!</p>';
+        } else {
+            relevantOrders.forEach(order => {
+                const orderCard = document.createElement('div');
+                orderCard.classList.add('order-card');
+
+                let productsHtml = '';
+                order.products.forEach(product => {
+                    productsHtml += `
+                        <div class="order-product">
+                            <img src="${product.imageUrl}" alt="${product.name}" class="order-product-image">
+                            <div class="order-product-info">
+                                <h4>${product.name}</h4>
+                                <p>Quantity: ${product.quantity} | Price: Rs. ${product.price.toLocaleString()}</p>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                orderCard.innerHTML = `
+                    <div class="order-header">
+                        <div>
+                            <strong>Order ID:</strong> ${order.id}<br>
+                            <strong>Date:</strong> ${order.date}
+                        </div>
+                        <div>
+                            <strong>Total:</strong> Rs. ${order.total.toLocaleString()}<br>
+                            <span class="badge ${order.status === 'Processing' || order.status === 'Pending' ? 'badge-warning' : (order.status === 'Delivered' ? 'badge-success' : 'badge-danger')}">${order.status}</span>
+                        </div>
+                    </div>
+                    <div class="order-products">
+                        ${productsHtml}
+                    </div>
+                    <button class="btn btn-primary btn-sm" onclick="alert('Viewing order details for ${order.id}!')">View Details</button>
+                `;
+                customerOrdersList.appendChild(orderCard);
+            });
+        }
+    }
+
+    // Render orders in the Admin section (Dashboard and Orders tab)
+    function renderAdminOrders() {
+        const adminOrdersTableBody = document.querySelector('#admin-orders-table tbody');
+        const adminDashboardOrdersTableBody = document.querySelector('#admin-dashboard-orders-table tbody');
+
+        if (adminOrdersTableBody) adminOrdersTableBody.innerHTML = '';
+        if (adminDashboardOrdersTableBody) adminDashboardOrdersTableBody.innerHTML = '';
+
+        const orderStatuses = ['Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled'];
+
+        allOrders.forEach(order => {
+            const rowHtml = `
+                <tr data-order-id="${order.id}" id="admin-order-row-${order.id}">
+                    <td>${order.id}</td>
+                    <td>${order.customer}</td>
+                    <td>${order.date}</td>
+                    <td>${order.products.length}</td>
+                    <td>Rs. ${order.total.toLocaleString()}</td>
+                    <td>
+                        <select class="form-control" onchange="changeOrderStatus(this)">
+                            ${orderStatuses.map(status => `
+                                <option value="${status}" ${order.status === status ? 'selected' : ''}>${status}</option>
+                            `).join('')}
+                        </select>
+                    </td>
+                    <td>
+                        <button class="btn btn-primary btn-sm" onclick="viewDetails(this, 'Order')"><i class="fas fa-eye"></i></button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteRow(this)"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+            `;
+
+            if (adminOrdersTableBody) {
+                adminOrdersTableBody.insertAdjacentHTML('beforeend', rowHtml);
+            }
+            // Add to dashboard table (showing recent few or all)
+            if (adminDashboardOrdersTableBody && allOrders.indexOf(order) >= Math.max(0, allOrders.length - 5)) { // Show last 5 orders on dashboard
+                adminDashboardOrdersTableBody.insertAdjacentHTML('afterbegin', rowHtml); // Add to top for recent
+            }
+        });
+
+        // Update dashboard stats (very basic example)
+        if (document.getElementById('total-orders-stat')) {
+            document.getElementById('total-orders-stat').textContent = allOrders.length;
+        }
+        if (document.getElementById('today-sales-stat')) {
+            const today = new Date().toLocaleDateString('en-US');
+            const dailySales = allOrders.filter(order => order.date === today).reduce((sum, order) => sum + order.total, 0);
+            document.getElementById('today-sales-stat').textContent = `Rs. ${dailySales.toLocaleString()}`;
+        }
+    }
+
+    // Toggle product in (non-persistent) wishlist
+    function toggleWishlist(buttonElement, productName) {
+      const icon = buttonElement.querySelector('i');
+      if (icon.classList.contains('far')) { // Not in wishlist (outline heart)
+        icon.classList.remove('far');
+        icon.classList.add('fas');
+        wishlist.push(productName);
+        alert(`${productName} added to wishlist!`);
+      } else { // In wishlist (solid heart)
+        icon.classList.remove('fas');
+        icon.classList.add('far');
+        wishlist = wishlist.filter(item => item !== productName);
+        alert(`${productName} removed from wishlist.`);
+      }
+      console.log('Current Wishlist:', wishlist);
+    }
+
+    // Handle customer profile update
+    function updateProfile(event) {
+      event.preventDefault();
+      const form = event.target;
+      const formData = new FormData(form);
+      const profileData = {};
+      for (let [key, value] of formData.entries()) {
+        profileData[key] = value;
+      }
+      console.log('Updated Profile Data:', profileData);
+      alert('Profile updated! (Check console for data)');
+      // In a real app, send this data via fetch() to your backend
+    }
+
+
+    // Initialize date and default tab on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      updateCurrentDate();
+      updateCartCount(); // Initialize cart count on load
+      
+      // Initial render for admin orders if already on admin page (unlikely for login page scenario)
+      // This is now primarily handled by the login function clicking the first nav link
+
+      // Add event listeners for search inputs (Admin)
+      const adminProductSearch = document.getElementById('admin-product-search');
+      if (adminProductSearch) {
+          adminProductSearch.addEventListener('keyup', () => filterTable('admin-product-search', 'admin-products-table'));
+      }
+      const adminOrderSearch = document.getElementById('admin-order-search');
+      if (adminOrderSearch) {
+          adminOrderSearch.addEventListener('keyup', () => filterTable('admin-order-search', 'admin-orders-table'));
+      }
+      const adminCustomerSearch = document.getElementById('admin-customer-search');
+      if (adminCustomerSearch) {
+          adminCustomerSearch.addEventListener('keyup', () => filterTable('admin-customer-search', 'admin-customers-table'));
+      }
+    });
+
+    // ... (rest of your script) ...
+
+    // Proceed to Checkout (Client-side simulation)
+    function checkout() {
+      if (cart.length === 0) {
+        alert('Your cart is empty. Please add some products before checking out.');
+        return;
+      }
+
+      const orderId = `ORD-${nextOrderId++}`;
+      const orderDate = new Date().toLocaleDateString('en-US');
+      let orderTotal = 0;
+      cart.forEach(item => orderTotal += item.subtotal);
+
+      const newOrder = {
+        id: orderId,
+        date: orderDate,
+        customer: "Anonymous Customer", // Changed from "Customer Placeholder"
+        total: orderTotal,
+        products: [...cart], // Copy cart items to order
+        status: 'Processing' // Initial status
+      };
+
+      allOrders.push(newOrder); // Add to the shared orders array
+      cart = []; // Clear cart after checkout
+      updateCartCount();
+      alert(`Order ${orderId} placed successfully!`);
+      console.log('New Order Placed:', newOrder);
+      console.log('All Orders:', allOrders);
+
+      // Update both customer and admin order views
+      renderOrders(); // For customer's "My Orders"
+      renderAdminOrders(); // For admin's "Order Management" and Dashboard
+
+      // Navigate to My Orders section
+      const ordersNavLink = document.querySelector('#main-content-customer nav a[href="#customer-orders"]');
+      if (ordersNavLink) {
+        ordersNavLink.click(); // Simulate clicking the My Orders tab
+      }
+    }
+
+    // ... (rest of your script) ...
+
+    
+  </script>
+</head>
+<body>
+  <div id="login-section">
+    <div class="login-container">
+      <div class="login-header">
+        <div class="logo">
+          <i class="fas fa-shopping-bag"></i>
+          <span>PrimeCart</span>
+        </div>
+        <h2>Welcome Back</h2>
+        <p>Sign in to access your account</p>
+      </div>
+      
+      <form class="form-section" onsubmit="login(event)">
+        <div class="alert alert-success" style="display: none;" id="login-alert">
+          Login successful! Redirecting...
+        </div>
+        
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" class="form-control" required name="email" placeholder="Enter your email" />
+        </div>
+        
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" class="form-control" required name="password" placeholder="Enter your password" />
+        </div>
+        
+        <div class="form-group">
+          <label>Login As</label>
+          <select id="role" class="form-control">
+            <option value="customer">Customer</option>
+            <option value="admin">Administrator</option>
+          </select>
+        </div>
+        
+        <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+        
+        <div class="login-footer">
+          <p>Don't have an account? <a href="#">Register here</a></p>
+          <p><a href="#">Forgot password?</a></p>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="main-content-admin">
+    <header>
+      <div class="logo">
+        <i class="fas fa-shopping-bag"></i>
+        <span>PrimeCart Admin</span>
+      </div>
+      <div>
+        <button class="btn btn-secondary" onclick="logout()">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+      </div>
+    </header>
+
+    <nav>
+      <a href="#admin-dashboard" class="active">Dashboard</a>
+      <a href="#admin-products">Products</a>
+      <a href="#admin-categories">Categories</a>
+      <a href="#admin-orders">Orders</a>
+      <a href="#admin-users">Customers</a>
+      <a href="#admin-payments">Payments</a>
+      <a href="#admin-reviews">Reviews</a>
+    </nav>
+
+    <div class="container" id="admin-dashboard">
+      <div class="dashboard-header">
+        <h2>Admin Dashboard</h2>
+        <div>Last updated: <span id="current-date"></span></div>
+      </div>
+      
+      <div class="stats-grid">
+        <div class="stat-card">
+          <h3 id="today-sales-stat">Rs. 0</h3>
+          <p>Today's Sales</p>
+        </div>
+        <div class="stat-card">
+          <h3 id="total-orders-stat">0</h3>
+          <p>Total Orders</p>
+        </div>
+        <div class="stat-card">
+          <h3>2,458</h3>
+          <p>Customers</p>
+        </div>
+        <div class="stat-card">
+          <h3>156</h3>
+          <p>Products</p>
+        </div>
+      </div>
+      
+      <h3>Recent Orders</h3>
+      <table id="admin-dashboard-orders-table">
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>Customer</th>
+            <th>Date</th>
+            <th>Items</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          </tbody>
+      </table>
+    </div>
+
+    <div class="container" id="admin-products" style="display: none;">
+      <div class="dashboard-header">
+        <h2>Product Management</h2>
+        <button class="btn btn-primary" onclick="openTab(event, 'add-product')">
+          <i class="fas fa-plus"></i> Add Product
+        </button>
+      </div>
+
+      <div class="tabs">
+        <div class="tab active" onclick="openTab(event, 'manage-products')">Manage Products</div>
+        <div class="tab" onclick="openTab(event, 'add-product')">Add New Product</div>
+      </div>
+
+      <div id="manage-products" class="tab-content active">
+        <div class="form-group" style="width: 300px; margin-bottom: 1rem;">
+            <input type="text" class="form-control" id="admin-product-search" placeholder="Search products...">
+        </div>
+        <table id="admin-products-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Product</th>
+              <th>Category</th>
+              <th>Price</th>
+              <th>Stock</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>#PROD-001</td>
+              <td>
+                <div style="display: flex; align-items: center;">
+                  <img src="https://images.unsplash.com/photo-1542291026-79eddc756ec0?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Product" style="width: 50px; height: 50px; margin-right: 10px; border-radius: 4px;">
+                  <span>Wireless Headphones</span>
+                </div>
+              </td>
+              <td>Electronics</td>
+              <td>Rs. 4,999</td>
+              <td>45</td>
+              <td><span class="badge badge-success">Active</span></td>
+              <td>
+                <button class="btn btn-primary btn-sm" onclick="editItem(this)"><i class="fas fa-edit"></i></button>
+                <button class="btn btn-danger btn-sm" onclick="deleteRow(this)"><i class="fas fa-trash"></i></button>
+              </td>
+            </tr>
+            <tr>
+              <td>#PROD-002</td>
+              <td>
+                <div style="display: flex; align-items: center;">
+                  <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Product" style="width: 50px; height: 50px; margin-right: 10px; border-radius: 4px;">
+                  <span>Smart Watch</span>
+                </div>
+              </td>
+              <td>Electronics</td>
+              <td>Rs. 12,999</td>
+              <td>22</td>
+              <td><span class="badge badge-success">Active</span></td>
+              <td>
+                <button class="btn btn-primary btn-sm" onclick="editItem(this)"><i class="fas fa-edit"></i></button>
+                <button class="btn btn-danger btn-sm" onclick="deleteRow(this)"><i class="fas fa-trash"></i></button>
+              </td>
+            </tr>
+            <tr>
+              <td>#PROD-003</td>
+              <td>
+                <div style="display: flex; align-items: center;">
+                  <img src="https://images.unsplash.com/photo-1585387431749-d3e9d8f9a9c8?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Product" style="width: 50px; height: 50px; margin-right: 10px; border-radius: 4px;">
+                  <span>Running Shoes</span>
+                </div>
+              </td>
+              <td>Footwear</td>
+              <td>Rs. 3,499</td>
+              <td>0</td>
+              <td><span class="badge badge-danger">Out of Stock</span></td>
+              <td>
+                <button class="btn btn-primary btn-sm" onclick="editItem(this)"><i class="fas fa-edit"></i></button>
+                <button class="btn btn-danger btn-sm" onclick="deleteRow(this)"><i class="fas fa-trash"></i></button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div id="add-product" class="tab-content">
+        <div class="admin-form">
+          <h3>Add New Product</h3>
+          <form onsubmit="handleFormSubmit(event, 'Product')">
+            <div class="form-group">
+              <label>Product Name</label>
+              <input type="text" class="form-control" name="productName" placeholder="Enter product name" required>
+            </div>
+            <div class="form-group">
+              <label>Description</label>
+              <textarea class="form-control" rows="3" name="description" placeholder="Enter product description"></textarea>
+            </div>
+            <div class="form-group">
+              <label>Category</label>
+              <select class="form-control" name="category">
+                <option>Electronics</option>
+                <option>Clothing</option>
+                <option>Footwear</option>
+                <option>Home & Kitchen</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Price (Rs.)</label>
+              <input type="number" class="form-control" name="price" placeholder="Enter price" required min="0">
+            </div>
+            <div class="form-group">
+              <label>Stock Quantity</label>
+              <input type="number" class="form-control" name="stockQuantity" placeholder="Enter stock quantity" required min="0">
+            </div>
+            <div class="form-group">
+              <label>Product Images</label>
+              <input type="file" class="form-control" name="productImages" multiple>
+            </div>
+            <button type="submit" class="btn btn-primary">Save Product</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="container" id="admin-categories" style="display: none;">
+      <div class="dashboard-header">
+        <h2>Category Management</h2>
+        <button class="btn btn-primary" onclick="openTab(event, 'add-category')">
+          <i class="fas fa-plus"></i> Add Category
+        </button>
+      </div>
+
+      <div class="tabs">
+        <div class="tab active" onclick="openTab(event, 'manage-categories')">Manage Categories</div>
+        <div class="tab" onclick="openTab(event, 'add-category')">Add New Category</div>
+      </div>
+
+      <div id="manage-categories" class="tab-content active">
+        <table id="admin-categories-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Category Name</th>
+              <th>Products</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>#CAT-001</td>
+              <td>Electronics</td>
+              <td>56</td>
+              <td><span class="badge badge-success">Active</span></td>
+              <td>
+                <button class="btn btn-primary btn-sm" onclick="editItem(this)"><i class="fas fa-edit"></i></button>
+                <button class="btn btn-danger btn-sm" onclick="deleteRow(this)"><i class="fas fa-trash"></i></button>
+              </td>
+            </tr>
+            <tr>
+              <td>#CAT-002</td>
+              <td>Clothing</td>
+              <td>34</td>
+              <td><span class="badge badge-success">Active</span></td>
+              <td>
+                <button class="btn btn-primary btn-sm" onclick="editItem(this)"><i class="fas fa-edit"></i></button>
+                <button class="btn btn-danger btn-sm" onclick="deleteRow(this)"><i class="fas fa-trash"></i></button>
+              </td>
+            </tr>
+            <tr>
+              <td>#CAT-003</td>
+              <td>Footwear</td>
+              <td>28</td>
+              <td><span class="badge badge-success">Active</span></td>
+              <td>
+                <button class="btn btn-primary btn-sm" onclick="editItem(this)"><i class="fas fa-edit"></i></button>
+                <button class="btn btn-danger btn-sm" onclick="deleteRow(this)"><i class="fas fa-trash"></i></button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div id="add-category" class="tab-content">
+        <div class="admin-form">
+          <h3>Add New Category</h3>
+          <form onsubmit="handleFormSubmit(event, 'Category')">
+            <div class="form-group">
+              <label>Category Name</label>
+              <input type="text" class="form-control" name="categoryName" placeholder="Enter category name" required>
+            </div>
+            <div class="form-group">
+              <label>Description</label>
+              <textarea class="form-control" rows="3" name="description" placeholder="Enter category description"></textarea>
+            </div>
+            <div class="form-group">
+              <label>Status</label>
+              <select class="form-control" name="status">
+                <option>Active</option>
+                <option>Inactive</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Category Image</label>
+              <input type="file" class="form-control" name="categoryImage">
+            </div>
+            <button type="submit" class="btn btn-primary">Save Category</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="container" id="admin-orders" style="display: none;">
+      <div class="dashboard-header">
+        <h2>Order Management</h2>
+        <div class="form-group" style="width: 300px; margin: 0;">
+          <input type="text" class="form-control" id="admin-order-search" placeholder="Search orders...">
+        </div>
+      </div>
+
+      <table id="admin-orders-table">
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>Customer</th>
+            <th>Date</th>
+            <th>Items</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          </tbody>
+      </table>
+    </div>
+
+    <div class="container" id="admin-users" style="display: none;">
+      <div class="dashboard-header">
+        <h2>Customer Management</h2>
+        <div class="form-group" style="width: 300px; margin: 0;">
+          <input type="text" class="form-control" id="admin-customer-search" placeholder="Search customers...">
+        </div>
+      </div>
+
+      <table id="admin-customers-table">
+        <thead>
+          <tr>
+            <th>Customer ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Orders</th>
+            <th>Joined</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr id="customer-001">
+            <td>#CUST-001</td>
+            <td>John Doe</td>
+            <td>john@example.com</td>
+            <td>+92 300 1234567</td>
+            <td>12</td>
+            <td>2022-01-15</td>
+            <td>
+              <button class="btn btn-primary btn-sm" onclick="viewDetails(this, 'Customer')"><i class="fas fa-eye"></i></button>
+              <button class="btn btn-danger btn-sm" onclick="deleteRow(this)"><i class="fas fa-trash"></i></button>
+            </td>
+          </tr>
+          <tr id="customer-002">
+            <td>Ali Khan</td>
+            <td>ali@example.com</td>
+            <td>+92 300 7654321</td>
+            <td>8</td>
+            <td>2022-03-22</td>
+            <td>
+              <button class="btn btn-primary btn-sm" onclick="viewDetails(this, 'Customer')"><i class="fas fa-eye"></i></button>
+              <button class="btn btn-danger btn-sm" onclick="deleteRow(this)"><i class="fas fa-trash"></i></button>
+            </td>
+          </tr>
+          <tr id="customer-003">
+            <td>Sarah Smith</td>
+            <td>sarah@example.com</td>
+            <td>+92 300 9876543</td>
+            <td>5</td>
+            <td>2022-05-10</td>
+            <td>
+              <button class="btn btn-primary btn-sm" onclick="viewDetails(this, 'Customer')"><i class="fas fa-eye"></i></button>
+              <button class="btn btn-danger btn-sm" onclick="deleteRow(this)"><i class="fas fa-trash"></i></button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="container" id="admin-payments" style="display: none;">
+      <div class="dashboard-header">
+        <h2>Payment Transactions</h2>
+        <div class="form-group" style="width: 300px; margin: 0;">
+          <input type="text" class="form-control" placeholder="Search payments...">
+        </div>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Transaction ID</th>
+            <th>Order ID</th>
+            <th>Customer</th>
+            <th>Date</th>
+            <th>Amount</th>
+            <th>Method</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>#TRX-001</td>
+            <td>#ORD-1001</td>
+            <td>John Doe</td>
+            <td>2023-06-15</td>
+            <td>Rs. 22,500</td>
+            <td>Credit Card</td>
+            <td><span class="badge badge-success">Completed</span></td>
+          </tr>
+          <tr>
+            <td>#TRX-002</td>
+            <td>#ORD-1002</td>
+            <td>Ali Khan</td>
+            <td>2023-06-14</td>
+            <td>Rs. 15,750</td>
+            <td>PayPal</td>
+            <td><span class="badge badge-success">Completed</span></td>
+          </tr>
+          <tr>
+            <td>#TRX-003</td>
+            <td>#ORD-1003</td>
+            <td>Sarah Smith</td>
+            <td>2023-06-14</td>
+            <td>Rs. 8,990</td>
+            <td>Bank Transfer</td>
+            <td><span class="badge badge-danger">Failed</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="container" id="admin-reviews" style="display: none;">
+      <div class="dashboard-header">
+        <h2>Product Reviews</h2>
+        <div class="form-group" style="width: 300px; margin: 0;">
+          <input type="text" class="form-control" placeholder="Search reviews...">
+        </div>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Review ID</th>
+            <th>Product</th>
+            <th>Customer</th>
+            <th>Rating</th>
+            <th>Comment</th>
+            <th>Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>#REV-001</td>
+            <td>Wireless Headphones</td>
+            <td>John Doe</td>
+            <td>
+              <i class="fas fa-star" style="color: #fbbf24;"></i>
+              <i class="fas fa-star" style="color: #fbbf24;"></i>
+              <i class="fas fa-star" style="color: #fbbf24;"></i>
+              <i class="fas fa-star" style="color: #fbbf24;"></i>
+              <i class="fas fa-star" style="color: #fbbf24;"></i>
+            </td>
+            <td>Great sound quality!</td>
+            <td>2023-06-16</td>
+            <td>
+              <button class="btn btn-danger btn-sm" onclick="deleteRow(this)"><i class="fas fa-trash"></i></button>
+            </td>
+          </tr>
+          <tr>
+            <td>#REV-002</td>
+            <td>Smart Watch</td>
+            <td>Ali Khan</td>
+            <td>
+              <i class="fas fa-star" style="color: #fbbf24;"></i>
+              <i class="fas fa-star" style="color: #fbbf24;"></i>
+              <i class="fas fa-star" style="color: #fbbf24;"></i>
+              <i class="fas fa-star" style="color: #fbbf24;"></i>
+              <i class="far fa-star" style="color: var(--gray-light);"></i>
+            </td>
+            <td>Good battery life, but a bit bulky.</td>
+            <td>2023-06-15</td>
+            <td>
+              <button class="btn btn-danger btn-sm" onclick="deleteRow(this)"><i class="fas fa-trash"></i></button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="main-content-customer" style="display: none;">
+    <header>
+      <div class="logo">
+        <i class="fas fa-shopping-bag"></i>
+        <span>PrimeCart</span>
+      </div>
+      <div>
+        <a href="#customer-cart" style="position: relative; margin-right: 15px; color: var(--secondary-color);" onclick="handleNavLinkClick.call(this, event)">
+            <i class="fas fa-shopping-cart" style="font-size: 1.5rem;"></i>
+            <span id="cart-count" class="cart-count" style="display: none;">0</span>
+        </a>
+        <button class="btn btn-secondary" onclick="logout()">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+      </div>
+    </header>
+
+    <nav>
+      <a href="#customer-home" class="active">Home</a>
+      <a href="#customer-products">Products</a>
+      <a href="#customer-cart">Cart</a>
+      <a href="#customer-wishlist">Wishlist</a>
+      <a href="#customer-orders">My Orders</a>
+      <a href="#customer-profile">Profile</a>
+    </nav>
+
+    <div class="container" id="customer-home">
+      <div class="hero">
+        <h2>Shop Smarter, Live Better</h2>
+        <p>Discover amazing products at unbeatable prices.</p>
+        <a href="#customer-products" class="btn btn-primary" onclick="handleNavLinkClick.call(this, event)">Start Shopping</a>
+      </div>
+
+      <h2>Featured Products</h2>
+      <div class="product-grid">
+        <div class="product-card">
+          <img src="https://images.unsplash.com/photo-1542291026-79eddc756ec0?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Stylish Sneakers" class="product-image">
+          <div class="product-info">
+            <h3>Stylish Sneakers</h3>
+            <p class="product-price">Rs. 3,499</p>
+            <div class="product-meta">
+              <span>Category: Footwear</span>
+              <span>In Stock: 50</span>
+            </div>
+            <div class="product-actions">
+              <button class="btn btn-primary" onclick="addToCart('Stylish Sneakers', 3499, 'https://images.unsplash.com/photo-1542291026-79eddc756ec0?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80')"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
+              <button class="btn btn-secondary" onclick="toggleWishlist(this, 'Stylish Sneakers')"><i class="far fa-heart"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-card">
+          <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Gaming Laptop" class="product-image">
+          <div class="product-info">
+            <h3>Gaming Laptop</h3>
+            <p class="product-price">Rs. 120,000</p>
+            <div class="product-meta">
+              <span>Category: Electronics</span>
+              <span>In Stock: 15</span>
+            </div>
+            <div class="product-actions">
+              <button class="btn btn-primary" onclick="addToCart('Gaming Laptop', 120000, 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80')"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
+              <button class="btn btn-secondary" onclick="toggleWishlist(this, 'Gaming Laptop')"><i class="far fa-heart"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-card">
+          <img src="https://images.unsplash.com/photo-1585387431749-d3e9d8f9a9c8?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Smart LED TV" class="product-image">
+          <div class="product-info">
+            <h3>Smart LED TV</h3>
+            <p class="product-price">Rs. 65,000</p>
+            <div class="product-meta">
+              <span>Category: Electronics</span>
+              <span>In Stock: 8</span>
+            </div>
+            <div class="product-actions">
+              <button class="btn btn-primary" onclick="addToCart('Smart LED TV', 65000, 'https://images.unsplash.com/photo-1585387431749-d3e9d8f9a9c8?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80')"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
+              <button class="btn btn-secondary" onclick="toggleWishlist(this, 'Smart LED TV')"><i class="far fa-heart"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-card">
+          <img src="https://images.unsplash.com/photo-1523275371358-132d7332d7a2?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Analog Watch" class="product-image">
+          <div class="product-info">
+            <h3>Analog Watch</h3>
+            <p class="product-price">Rs. 8,500</p>
+            <div class="product-meta">
+              <span>Category: Accessories</span>
+              <span>In Stock: 30</span>
+            </div>
+            <div class="product-actions">
+              <button class="btn btn-primary" onclick="addToCart('Analog Watch', 8500, 'https://images.unsplash.com/photo-1523275371358-132d7332d7a2?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80')"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
+              <button class="btn btn-secondary" onclick="toggleWishlist(this, 'Analog Watch')"><i class="far fa-heart"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container" id="customer-products" style="display: none;">
+      <h2>All Products</h2>
+      <div class="product-grid">
+        <div class="product-card">
+          <img src="https://images.unsplash.com/photo-1542291026-79eddc756ec0?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Stylish Sneakers" class="product-image">
+          <div class="product-info">
+            <h3>Stylish Sneakers</h3>
+            <p class="product-price">Rs. 3,499</p>
+            <div class="product-meta">
+              <span>Category: Footwear</span>
+              <span>In Stock: 50</span>
+            </div>
+            <div class="product-actions">
+              <button class="btn btn-primary" onclick="addToCart('Stylish Sneakers', 3499, 'https://images.unsplash.com/photo-1542291026-79eddc756ec0?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80')"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
+              <button class="btn btn-secondary" onclick="toggleWishlist(this, 'Stylish Sneakers')"><i class="far fa-heart"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-card">
+          <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Gaming Laptop" class="product-image">
+          <div class="product-info">
+            <h3>Gaming Laptop</h3>
+            <p class="product-price">Rs. 120,000</p>
+            <div class="product-meta">
+              <span>Category: Electronics</span>
+              <span>In Stock: 15</span>
+            </div>
+            <div class="product-actions">
+              <button class="btn btn-primary" onclick="addToCart('Gaming Laptop', 120000, 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80')"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
+              <button class="btn btn-secondary" onclick="toggleWishlist(this, 'Gaming Laptop')"><i class="far fa-heart"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-card">
+          <img src="https://images.unsplash.com/photo-1585387431749-d3e9d8f9a9c8?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Smart LED TV" class="product-image">
+          <div class="product-info">
+            <h3>Smart LED TV</h3>
+            <p class="product-price">Rs. 65,000</p>
+            <div class="product-meta">
+              <span>Category: Electronics</span>
+              <span>In Stock: 8</span>
+            </div>
+            <div class="product-actions">
+              <button class="btn btn-primary" onclick="addToCart('Smart LED TV', 65000, 'https://images.unsplash.com/photo-1585387431749-d3e9d8f9a9c8?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80')"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
+              <button class="btn btn-secondary" onclick="toggleWishlist(this, 'Smart LED TV')"><i class="far fa-heart"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-card">
+          <img src="https://images.unsplash.com/photo-1523275371358-132d7332d7a2?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Analog Watch" class="product-image">
+          <div class="product-info">
+            <h3>Analog Watch</h3>
+            <p class="product-price">Rs. 8,500</p>
+            <div class="product-meta">
+              <span>Category: Accessories</span>
+              <span>In Stock: 30</span>
+            </div>
+            <div class="product-actions">
+              <button class="btn btn-primary" onclick="addToCart('Analog Watch', 8500, 'https://images.unsplash.com/photo-1523275371358-132d7332d7a2?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80')"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
+              <button class="btn btn-secondary" onclick="toggleWishlist(this, 'Analog Watch')"><i class="far fa-heart"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container" id="customer-cart" style="display: none;">
+      <h2>Your Shopping Cart</h2>
+      <div id="cart-items-list">
+        </div>
+      <button id="proceed-to-checkout-btn" class="btn btn-primary" onclick="checkout()" style="margin-top: 1rem;">Proceed to Checkout</button>
+    </div>
+
+    <div class="container" id="customer-wishlist" style="display: none;">
+      <h2>My Wishlist</h2>
+      <div id="wishlist-items">
+        <p>Your wishlist is currently empty.</p>
+        </div>
+    </div>
+
+    <div class="container" id="customer-orders" style="display: none;">
+      <h2>My Orders</h2>
+      <div id="customer-orders-list">
+        </div>
+    </div>
+
+    <div class="container" id="customer-profile" style="display: none;">
+      <h2>My Profile</h2>
+      <div class="form-section">
+        <form onsubmit="updateProfile(event)">
+            <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" class="form-control" name="fullName" value="John Doe">
+            </div>
+            <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" class="form-control" name="email" value="john@example.com">
+            </div>
+            <div class="form-group">
+            <label>Phone Number</label>
+            <input type="text" class="form-control" name="phoneNumber" value="+92 300 1234567">
+            </div>
+            <div class="form-group">
+            <label>Shipping Address</label>
+            <textarea class="form-control" rows="3" name="shippingAddress">123 Main Street, City, Country</textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Update Profile</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-column">
+        <h3>PrimeCart</h3>
+        <p>Your one-stop shop for everything you need. Quality products, unbeatable prices.</p>
+        <div class="social-links">
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+      </div>
+      <div class="footer-column">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h3>Customer Service</h3>
+        <ul>
+          <li><a href="#">FAQs</a></li>
+          <li><a href="#">Shipping & Returns</a></li>
+          <li><a href="#">Order Tracking</a></li>
+          <li><a href="#">Support Center</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h3>Contact Info</h3>
+        <p><i class="fas fa-map-marker-alt"></i> 123 Prime St, Retail City, PC 12345</p>
+        <p><i class="fas fa-phone"></i> +92 123 4567890</p>
+        <p><i class="fas fa-envelope"></i> info@primecart.com</p>
+      </div>
+    </div>
+    <div class="copyright">
+      &copy; 2023 PrimeCart. All rights reserved.
+    </div>
+  </footer>
+</body>
+</html>
